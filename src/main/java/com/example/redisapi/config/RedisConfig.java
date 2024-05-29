@@ -23,6 +23,16 @@ public class RedisConfig {
         return new LettuceConnectionFactory();
     }
 
+    /* coupon 단순 문자열 데이터 전달 방식을 위한 구분 */
+    @Bean
+    public RedisTemplate<String, String> couponRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+        return template;
+    }
+
     /* redis cli와 swagger api 데이터 형식 일관성을 위한 수정 */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
