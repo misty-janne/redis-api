@@ -78,7 +78,7 @@ Status: 200 OK
 
 ```
 curl -X 'POST' \
-  'http://127.0.0.1:8089/api/coupons/generate?count=2' \
+  'http://127.0.0.1:8089/api/coupons/generate?count=3' \
   -H 'accept: */*' \
   -d ''
 ```
@@ -88,12 +88,12 @@ curl -X 'POST' \
 Status: 200 OK
 Content-Type: application/json
 
-["5c0d57cb-c640-431f-acab-d14f4923de27", "0f979777-a16a-44a4-8ac3-e3fd5a7611a0"]
+["c9b3b8b7-89ca-48c3-9ab1-bc735b681f38", "5c0d57cb-c640-431f-acab-d14f4923de27", "0f979777-a16a-44a4-8ac3-e3fd5a7611a0"]
 ```
 
 ### issueCoupon
 #### Request
-`GET /api/coupons/generate`
+`GET /api/coupons/issue`
 
 ```
 curl -X 'GET' \
