@@ -13,9 +13,10 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-//    @Autowired
-//    private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
+    /** redis data
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -66,16 +67,17 @@ public class UserService {
         //redis 캐시에서도 삭제
         redisTemplate.opsForHash().delete(KEY, id);
     }
+    **/
 
 
 
 
-    /**
+    /** sql data **/
      public User save(User user) {
      return userRepository.save(user);
      }
 
-     public Optional<User> findById(String id) {
+     public Optional<User> findById(Long id) {
      return userRepository.findById(id);
      }
 
@@ -83,9 +85,8 @@ public class UserService {
      return userRepository.findAll();
      }
 
-     public void deleteById(String id) {
+     public void deleteById(Long id) {
      userRepository.deleteById(id);
      }
-     *
-     */
+
 }

@@ -1,30 +1,25 @@
 package com.example.redisapi.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+//import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
+//@RedisHash("User")
+@Entity
+@Table(name = "user_table")
+@Data
+public class User {
 
-@RedisHash("User")
-public class User implements Serializable {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment
+    private Long id;
+
     private String name;
+    private String email;
+    private String password;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

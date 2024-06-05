@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{id}")
 //    @ApiOperation(value = "Get a user by ID")
-    public Optional<User> getUserById (@PathVariable String id) {
+    public Optional<User> getUserById (@PathVariable Long id) {
         return userService.findById(id);
     }
     @GetMapping
@@ -35,7 +35,7 @@ public class UserController {
     }
     @DeleteMapping("/{id}")
 //    @ApiOperation(value = "Delete a user by ID")
-    public void deleteUserById(@PathVariable String id) {
+    public void deleteUserById(@PathVariable Long id) {
         userService.deleteById(id);
     }
 

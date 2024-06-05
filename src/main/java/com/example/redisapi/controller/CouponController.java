@@ -1,5 +1,7 @@
 package com.example.redisapi.controller;
 
+import com.example.redisapi.domain.Coupon;
+import com.example.redisapi.domain.UserCoupon;
 import com.example.redisapi.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +16,28 @@ public class CouponController {
     private CouponService couponService;
 
     @PostMapping("/generate")
-    public List<String> generateCoupons(@RequestParam int count) {
-        return couponService.generateCoupons(count);
+    public List<String> generateCoupons(@RequestParam int count, @RequestParam String type) {
+        return couponService.generateCoupons(count, type);
     }
 
-    @GetMapping("/issue")
-    public String issueCoupon() {
-        return couponService.issueCoupon();
+    @GetMapping("/available")
+    public List<Coupon> getAvailableCoupons() {
+        return couponService.getAvailableCoupons();
+    }
+
+    @GetMapping("/remaining/{userId}")
+    public Integer getRemainingCoupons(@PathVariable Long userId) {
+        return couponService.getRemainingCoupons(userId);
+    }
+
+    @PostMapping("/issue/{userId}")
+    public String issueCoupon(@PathVariable Long userId, @RequestParam String couponCode) {
+        return couponService.issueCoupon(userId, couponCode);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<UserCoupon> getUserCoupons(@PathVariable Long userId) {
+        return couponService.getCouponsByUserId(userId);
     }
 
 }
