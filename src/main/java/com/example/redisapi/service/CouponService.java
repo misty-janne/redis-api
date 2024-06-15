@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -108,6 +109,13 @@ public class CouponService {
         User user = userOptional.get();
         Coupon coupon = couponRepository.findByCode(couponCode);
 
+        if (coupon == null || coupon.isIssued()) {
+            return "사용할 수 없는 쿠폰입니다.";
+        }
+
+        coupon.setIssued(true);
+        couponRepository.save(coupon);
+
         UserCoupon userCoupon = new UserCoupon();
         userCoupon.setUser(user);
         userCoupon.setCoupon(coupon);
@@ -132,6 +140,20 @@ public class CouponService {
         List<UserCoupon> userCouponList = new ArrayList<>();
         userCoupons.forEach(userCouponList::add);
         return userCouponList;
+    }
+
+    public void useCoupon(Long userId, String couponCode) {
+        UserCoupon userCoupon = userCouponRepository.findByUserIdAndCouponCode(userId, couponCode);
+        if (userCoupon != null && !userCoupon.isUsed()) {
+            userCoupon.setUsed(true);
+            userCoupon.setUsedDate(LocalDateTime.now());
+            userCoupon.getCoupon().setUsed(true);
+            userCouponRepository.save(userCoupon);
+            couponRepository.save(userCoupon.getCoupon());
+            updateRemainingCouponsInCache(userId);
+        } else {
+            throw new IllegalArgumentException("사용할 수 없는 쿠폰입니다.");
+        }
     }
 
 

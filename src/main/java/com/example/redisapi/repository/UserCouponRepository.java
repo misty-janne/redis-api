@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
     Iterable<UserCoupon> findByUserId(Long userId);
     Integer countByUserIdAndUsedFalse(Long userId);
+    UserCoupon findByUserIdAndCouponCode(Long userId, String couponCode);
 }

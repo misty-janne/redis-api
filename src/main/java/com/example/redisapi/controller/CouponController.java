@@ -40,4 +40,14 @@ public class CouponController {
         return couponService.getCouponsByUserId(userId);
     }
 
+    @PostMapping("/use/{userId}")
+    public String useCoupon(@PathVariable Long userId, @RequestParam String couponCode) {
+        try {
+            couponService.useCoupon(userId, couponCode);
+            return "사용된 쿠폰: " + couponCode;
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+    }
+
 }
