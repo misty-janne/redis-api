@@ -20,8 +20,10 @@ public class CouponType {
      * P: n% 할인 쿠폰
      * F: 배송료 무료 쿠폰
      */
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String code;
+    @Column(unique = true)
+    private String codeId;  // code + id
     private String description;
     private Double discountPercentage;  // 할인율
     private String productCode;         // 특정 할인 상품 코드
@@ -29,5 +31,13 @@ public class CouponType {
 
     @OneToMany(mappedBy = "couponType")
     private Set<Coupon> coupons;
+
+    @PostPersist
+    public void generateCodeDetail() {
+        if (code != null && !code.isEmpty()) {
+            // ID 값을 이용하여 고유한 코드 생성
+            codeId = code + "-" + id;
+        }
+    }
 
 }

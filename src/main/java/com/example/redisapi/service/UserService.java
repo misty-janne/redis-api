@@ -74,19 +74,19 @@ public class UserService {
 
     /** sql data **/
      public User save(User user) {
-     return userRepository.save(user);
+        return userRepository.save(user);
      }
 
      public Optional<User> findById(Long id) {
-     return userRepository.findById(id);
+         return userRepository.findById(id);
      }
 
      public Iterable<User> findAll() {
-     return userRepository.findAll();
+         return userRepository.findAll();
      }
 
      public void deleteById(Long id) {
-     userRepository.deleteById(id);
+         userRepository.deleteById(id);
      }
 
 }

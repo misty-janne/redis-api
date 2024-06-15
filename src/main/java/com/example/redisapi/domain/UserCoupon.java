@@ -3,6 +3,7 @@ package com.example.redisapi.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,5 +26,11 @@ public class UserCoupon {
     private boolean used;
     private LocalDateTime issuedDate;
     private LocalDateTime usedDate;
+
+    @PrePersist
+    public void prePersist() {
+        // 현재 날짜 설정
+        issuedDate = LocalDateTime.now();
+    }
 
 }

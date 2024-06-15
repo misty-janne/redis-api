@@ -52,7 +52,7 @@ public class CouponService {
 
     //쿠폰 생성
     public List<String> generateCoupons(int count, String type) {
-        Optional<CouponType> typeOptional = couponTypeRepository.findByCode(type);
+        Optional<CouponType> typeOptional = couponTypeRepository.findByCodeId(type);
         if (!typeOptional.isPresent()) {
             throw new IllegalArgumentException("Invalid coupon type");
         }
