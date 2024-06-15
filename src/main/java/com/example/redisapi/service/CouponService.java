@@ -52,10 +52,10 @@ public class CouponService {
     }
 
     //쿠폰 생성
-    public List<String> generateCoupons(int count, String type) {
-        Optional<CouponType> typeOptional = couponTypeRepository.findByCodeId(type);
+    public List<String> generateCoupons(int count, String codeId) {
+        Optional<CouponType> typeOptional = couponTypeRepository.findByCodeId(codeId);
         if (!typeOptional.isPresent()) {
-            throw new IllegalArgumentException("Invalid coupon type");
+            throw new IllegalArgumentException("유효한 코드타입이 아닙니다.");
         }
 
         CouponType couponType = typeOptional.get();
@@ -71,6 +71,9 @@ public class CouponService {
             couponRepository.save(coupon);
             couponCodes.add(coupon.getCode());
         }
+
+        // 쿠폰생성시 redis cache 삭제(업데이트)
+        redisTemplate.delete(COUPON_CACHE_KEY);
 
         return couponCodes;
     }
@@ -130,6 +133,9 @@ public class CouponService {
         userCoupons.add(userCoupon);
         redisTemplate.opsForValue().set(key, userCoupons, Duration.ofMinutes(10));
 
+        //쿠폰 발행시 redis cache 클리어
+        redisTemplate.delete(COUPON_CACHE_KEY);
+
         updateRemainingCouponsInCache(userId);
 
         return "Coupon issued: " + coupon.getCode();
@@ -151,6 +157,10 @@ public class CouponService {
             userCouponRepository.save(userCoupon);
             couponRepository.save(userCoupon.getCoupon());
             updateRemainingCouponsInCache(userId);
+
+            //쿠폰 사용시 redis cache 클리어
+            redisTemplate.delete(COUPON_CACHE_KEY);
+
         } else {
             throw new IllegalArgumentException("사용할 수 없는 쿠폰입니다.");
         }
